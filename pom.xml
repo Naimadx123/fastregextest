@@ -29,7 +29,7 @@
             <artifactId>fastregex</artifactId>
             <version>1.15.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/dist/fastregex.jar</systemPath>
+            <systemPath>${project.basedir}/libs/fastregex.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
@@ -75,6 +75,13 @@
                                 </transformer>
                             </transformers>
                             <filters>
+                                <filter>
+                                    <artifact>me.naimad.fastregex:fastregex</artifact>
+                                    <excludes>
+                                        <exclude>me/naimad/fastregex/FastRegex.class</exclude>
+                                        <exclude>me/naimad/fastregex/FastRegex$PackedUtf8.class</exclude>
+                                    </excludes>
+                                </filter>
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>

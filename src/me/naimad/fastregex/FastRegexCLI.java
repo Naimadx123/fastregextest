@@ -3,7 +3,7 @@ package me.naimad.fastregex;
 public class FastRegexCLI {
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java -Djava.library.path=dist -jar fastregex.jar <regex> <string>");
+            System.out.println("Usage: java -Djava.library.path=libs -jar fastregex.jar <regex> <string>");
             return;
         }
 
