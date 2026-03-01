@@ -23,13 +23,18 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <repositories>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${project.basedir}/repo</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>me.naimad.fastregex</groupId>
             <artifactId>fastregex</artifactId>
             <version>1.15.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/fastregex.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>

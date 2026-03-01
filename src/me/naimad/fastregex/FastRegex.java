@@ -7,7 +7,6 @@ public class FastRegex {
 
     static {
         try {
-            System.out.println("[FastRegex] Starting native library loading...");
             String os = System.getProperty("os.name").toLowerCase();
             String prefix = "native/";
             String filename;
@@ -23,39 +22,33 @@ public class FastRegex {
                 filename = "libfastregex.so";
             }
 
-            String resourcePath = "/" + prefix + filename;
+            // Search for resource relative to the class (me/naimad/fastregex/native/...)
+            String resourcePath = prefix + filename;
             java.net.URL resource = FastRegex.class.getResource(resourcePath);
-            System.out.println("[FastRegex] Searching for resource (absolute): " + resourcePath);
             
             if (resource == null) {
-                resourcePath = prefix + filename;
-                resource = FastRegex.class.getClassLoader().getResource(resourcePath);
-                System.out.println("[FastRegex] Searching for resource (relative): " + resourcePath);
+                // Search for resource at the root of the JAR (/native/...)
+                resourcePath = "/" + prefix + filename;
+                resource = FastRegex.class.getResource(resourcePath);
             }
 
             if (resource == null) {
                 // Try Thread context class loader
                 resourcePath = prefix + filename;
                 resource = Thread.currentThread().getContextClassLoader().getResource(resourcePath);
-                System.out.println("[FastRegex] Searching for resource (TCCL): " + resourcePath);
             }
             
             if (resource == null) {
-                System.out.println("[FastRegex] Resource not found in JAR. Falling back to system library search.");
                 System.loadLibrary("fastregex");
             } else {
                 java.nio.file.Path temp = java.nio.file.Files.createTempFile("fastregex-", "-" + filename);
-                System.out.println("[FastRegex] Extracting resource to: " + temp.toAbsolutePath());
                 try (java.io.InputStream is = resource.openStream()) {
                     java.nio.file.Files.copy(is, temp, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
                 }
                 System.load(temp.toAbsolutePath().toString());
-                System.out.println("[FastRegex] Library loaded successfully.");
                 temp.toFile().deleteOnExit();
             }
         } catch (Exception e) {
-            System.err.println("[FastRegex] Failed to load native library: " + e.getMessage());
-            e.printStackTrace();
             try { System.loadLibrary("fastregex"); } catch (UnsatisfiedLinkError le) {}
         }
     }
